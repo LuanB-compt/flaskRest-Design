@@ -1,0 +1,49 @@
+#!/bin/bash
+
+Title () {
+    figlet API DATABASE
+    echo
+}
+
+Help () {
+    Title
+    echo "Bash script to manage the MongoDB initializer"
+    echo 
+    echo "Syntax: $./init_mongo [-h]"
+    echo "Options:"
+    echo "-h            Help usage"
+}
+
+CheckFolder() {
+    chmod +x ./setup_mongo
+    ./setup_mongo
+}
+
+MongoDBStart() {
+    figlet MongoDB start
+    echo
+    echo "- Starting MongoDB:"
+    echo
+    mongod --dbpath ../../instance/mongodb/data --logpath ../../instance/mongodb/log/mongod.log
+}
+
+Main () {
+    while getopts 'h' FLAG; do
+        case "${FLAG}" in
+            h)
+                Help
+                exit
+                ;;
+            ?)
+                echo "Error: invalid syntax"
+                exit
+                ;;
+        esac
+    done
+
+    CheckFolder
+    MongoDBStart
+    exit
+}
+
+Main "$@"

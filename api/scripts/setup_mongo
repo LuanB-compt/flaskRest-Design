@@ -1,0 +1,52 @@
+#!/bin/bash
+
+Title () {
+    figlet API DATABASE
+    echo
+}
+
+Help () {
+    Title
+    echo "Bash script to setup the MongoDB"
+    echo 
+    echo "Syntax: $./init_mongo [-h]"
+    echo "Options:"
+    echo "-h            Help usage"
+}
+
+CheckFolder() {
+    Title
+    if [ -d "../../instance/mongodb" ]
+    then
+        echo "LOG: Folder already created ($(date))"
+        echo
+    else
+        USER=$(whoami)
+        mkdir -p ../../instance/mongodb/data
+        mkdir -p ../../instance/mongodb/log
+        touch ../../instance/mongodb/log/mongod.log
+        sudo chown "$USER" ../../instance/mongodb
+        echo "LOG: Created the folder ($(date))"
+        echo
+    fi
+}
+
+Main () {
+    while getopts 'h' FLAG; do
+        case "${FLAG}" in
+            h)
+                Help
+                exit
+                ;;
+            ?)
+                echo "Error: invalid syntax"
+                exit
+                ;;
+        esac
+    done
+
+    CheckFolder
+    exit
+}
+
+Main "$@"
